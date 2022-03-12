@@ -1,0 +1,49 @@
+/* Query 1 */
+/* What the most sold tracks (top 10)  */
+
+
+SELECT t.name track_name,SUM(iv.unitprice * iv.quantity) AS total_of_Sales_amount
+
+From Track t
+JOIN InvoiceLine iv
+ON iv.trackid = t.trackid
+GROUP BY 1
+ORDER BY total_of_Sales_amount DESC
+limit 10;
+
+
+/* Query 2 */
+/* What the number of sold tracks per Country */
+
+SELECT i.billingcountry Country, COUNT(il.Quantity)  Num_Sold_Tracks 
+FROM Invoice i
+JOIN InvoiceLine il
+ON i.invoiceid = il.invoiceid
+GROUP BY i.billingcountry
+ORDER BY Num_Sold_Tracks DESC;
+
+/* Query 3 */
+/* who is the most supportive employee with the customers */
+
+SELECT e.FirstName SupportRep,SUM(i.total) AS total_of_Sales_amount
+FROM Invoice i
+join Customer c
+on c.CustomerId = i.CustomerId
+join Employee e
+on c.SupportRepId = e.EmployeeId
+GROUP BY SupportRep
+ORDER BY total_of_Sales_amount DESC;
+
+/* Query 4 */
+/* What is the amounts of sales for each playlist */
+
+SELECT ply.name Playlist_name,SUM(il.unitprice * il.quantity) AS total_of_Sales_amount
+FROM Playlist ply
+join PlaylistTrack plt
+on ply.PlaylistId = plt.PlaylistId
+JOIN Track t
+ON t.TrackId = plt.TrackId
+JOIN InvoiceLine il
+ON il.trackid = t.trackid
+GROUP BY 1
+ORDER BY total_of_Sales_amount DESC;
